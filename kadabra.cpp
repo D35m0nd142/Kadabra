@@ -498,7 +498,6 @@ void log_get_ext() {
         if(read == "\"GET") nget++;
     }
     
-    // nget mi dice quale è l'ultimo GET (ovvero quello da considerare)
     ifile.close();
     ifile.open("out.txt");
     while(ifile.good() && nget > 0) {
@@ -834,13 +833,13 @@ void self_environ(string cmd, string owebsite, string path) {
 
 
 int main(int argc, char *argv[]) {
-    string scelta = "z";
+    string choice = "z";
     string infopath;
-    string scelta1 = "z",website,owebsite,path,msg,headers,msgshort,ucmd,scan,page="nope",dec_str;
+    string choice1 = "z",website,owebsite,path,msg,headers,msgshort,ucmd,scan,page="nope",dec_str;
     string read;
     const char *req;
     ifstream ifile2;
-    cout << "\n KadabrA v.1.1_beta\n";
+    cout << "\n KadabrA v1.1_beta\n";
     cout << " Automatic LFI scanner and exploiter\n";
     cout << " Author: D35m0nd142\n\n";
     
@@ -851,10 +850,10 @@ int main(int argc, char *argv[]) {
         cout << " x) Exit                     \n";
         cout << "-----------------------------\n";
         cout << " -> ";
-        cin >> scelta;
+        cin >> choice;
         
-        if(scelta[0] == 'x') clean();
-        if(scelta[0] == 'a') {
+        if(choice[0] == 'x') clean();
+        if(choice[0] == 'a') {
             cout << "[*] Enter the website without http:// -> ";
             cin >> owebsite;
             cout << "[*] Enter the LFI path -> ";
@@ -902,7 +901,7 @@ int main(int argc, char *argv[]) {
         }
         
         else {
-            scelta1 = "nope";
+            choice1 = "nope";
             cout << "____________________________\n\n";
             cout << " Hack ways:                 \n";
             cout << "____________________________\n\n";
@@ -915,11 +914,11 @@ int main(int argc, char *argv[]) {
             cout << " x) back                    \n";
             cout << "____________________________\n";
             cout << " -> ";
-            cin >> scelta1;
+            cin >> choice1;
             cout << "[*] Enter the target without http:// -> ";
             cin >> owebsite;
             
-            switch(scelta1[0]) {
+            switch(choice1[0]) {
 				case 'a':
                     cout << "[*] Enter the LFI path -> ";
 					cin >> path;
