@@ -17,6 +17,6 @@ As soon as possible I will publish the updated version of Kadabra but for the mo
 
 Compile the software using "bash make.bash" if you want to be sure it will work and MAKE SURE TO USE THE SOFTWARE PROPERLY.
 
-I do not take any responsibility for the use you are going to make of this software. This was created for not malicious purposes and keep in mind that if you will perform any crime, voluntarily or not, you will be the only one responsible for that. 
+I do not take any responsability for the use you are going to make of this software. This was created for not malicious purposes and keep in mind that if you will perform any crime, voluntarily or not, you will be the only one responsible for that. 
 
 D35m0nd142
