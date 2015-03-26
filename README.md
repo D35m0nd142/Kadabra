@@ -2,7 +2,7 @@
 
 Kadabra v1.1_beta: Automatic LFI Exploiter and Scanner
 
-Author: D35m0nd142 <d35m0nd142@gmail.com>
+Author: D35m0nd142, <d35m0nd142@gmail.com>
 
 Follow me on: https://twitter.com/d35m0nd142
 
