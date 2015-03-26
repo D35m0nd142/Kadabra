@@ -24,7 +24,6 @@ string word;
 vector <char> ext;
 vector <char> finalext;
 
-// Moduli per attacco php://filter
 bool control(char i) {
     int t; t = (int) i;
     if((t >= 65 && t <= 90) || (t >= 97 && t <= 122) || (t >= 48 && t <= 57) || (t == 43) || (t == 47) || (t == 61)) return true;
