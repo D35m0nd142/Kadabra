@@ -1,5 +1,5 @@
 /* 
- Kadabra v.0.1: LFI Exploiter and Scanner
+ Kadabra v1.1_beta: LFI Exploiter and Scanner
  Author: D35m0nd142
 */
 
