@@ -843,7 +843,7 @@ int main(int argc, char *argv[]) {
     cout << " Automatic LFI scanner and exploiter\n";
     cout << " Author: D35m0nd142\n\n";
     
-    while(scelta[0] != 'x') {
+    while(choice[0] != 'x') {
         cout << "-----------------------------\n";
         cout << " a) Simple LFI scan          \n";
         cout << " b) Hack!                    \n";
