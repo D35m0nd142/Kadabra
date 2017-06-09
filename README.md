@@ -11,7 +11,7 @@ Tutorial Video: https://www.youtube.com/watch?v=iE1ILC86fYk
 To report any kind of problem mail me to the email address written above.
 
 <b>[DEPRECATED] Kadabra contains errors and it is deprecated (some of its functionalities do not work properly). 
-Go here -> https://github.com/D35m0nd142/LFISuite to see the new LFI-dedicated software, called LFISuite, I developed in the last months, totally written in Python 2.7, much better working than Kadabra and with many more attack modalities.
+Go here -> https://github.com/D35m0nd142/LFISuite to see the new LFI-dedicated software, called LFISuite, I developed, totally written in Python 2.7, much better working than Kadabra and with many more attack modalities.
 LFISuite provides an attack modality called "Auto-HACK" (in this case it is TOTALLY automatic) by which it scans and find LFI vulnerabilities, then exploits them using the best attack modes without you having to choose or do anything.</b>
 
 This is a beta release, in fact the project is almost complete but there is still one way of attack to implement. It is the /proc/self/fd attack and I am working on it. As soon as possible I will publish the updated version of Kadabra but for the moment use it as is or don't use it ;) 
